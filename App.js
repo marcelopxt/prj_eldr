@@ -5,6 +5,10 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Ionicons } from '@expo/vector-icons';
 import { StatusBar } from 'expo-status-bar';
 
+// Context
+import { ThemeProvider, useTheme } from './src/contexts/ThemeContext';
+import { DefaultTheme, DarkTheme } from '@react-navigation/native';
+
 // Screens
 import LoginScreen from './src/screens/LoginScreen';
 import HomeScreen from './src/screens/HomeScreen';
@@ -61,9 +65,27 @@ function ProfileStack({ setLogado }) {
   );
 }
 
-function MainApp({ setLogado }) {
+function MainAppContent({ setLogado }) {
+  const { theme, isDarkMode } = useTheme();
+
+  const baseTheme = isDarkMode ? DarkTheme : DefaultTheme;
+
+  const navigationTheme = {
+    ...baseTheme,
+    colors: {
+      ...baseTheme.colors,
+      primary: theme.colors.primary,
+      background: theme.colors.background,
+      card: theme.colors.card,
+      text: theme.colors.text,
+      border: theme.colors.border,
+      notification: theme.colors.notification,
+    },
+  };
+
   return (
-    <NavigationContainer>
+    <NavigationContainer theme={navigationTheme}>
+      <StatusBar style={isDarkMode ? "light" : "dark"} backgroundColor={theme.colors.card} />
       <Tab.Navigator
         screenOptions={({ route }) => ({
           tabBarIcon: ({ focused, color, size }) => {
@@ -79,9 +101,13 @@ function MainApp({ setLogado }) {
             }
             return <Ionicons name={iconName} size={size} color={color} />;
           },
-          tabBarActiveTintColor: '#ff4458', // Apply branding color to active tab
-          tabBarInactiveTintColor: 'gray',
+          tabBarActiveTintColor: theme.colors.tabIconSelected,
+          tabBarInactiveTintColor: theme.colors.tabIconDefault,
           headerShown: false,
+          tabBarStyle: {
+            backgroundColor: theme.colors.card,
+            borderTopColor: theme.colors.border,
+          }
         })}
       >
         <Tab.Screen name="Home" component={HomeScreen} />
@@ -95,12 +121,20 @@ function MainApp({ setLogado }) {
   );
 }
 
-export default function App() {
+function AppContent() {
   const [logado, setLogado] = useState(false);
 
   if (!logado) {
     return <LoginScreen setLogado={setLogado} />;
   }
 
-  return <MainApp setLogado={setLogado} />;
+  return <MainAppContent setLogado={setLogado} />;
+}
+
+export default function App() {
+  return (
+    <ThemeProvider>
+      <AppContent />
+    </ThemeProvider>
+  );
 }

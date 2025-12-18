@@ -10,19 +10,31 @@ import {
     ScrollView
 } from 'react-native';
 
+import { useTheme } from '../contexts/ThemeContext';
+
 export default function SettingsScreen() {
+    const { isDarkMode, toggleTheme, theme } = useTheme();
     const [notifications, setNotifications] = useState(true);
-    const [darkMode, setDarkMode] = useState(false);
     const [emailUpdates, setEmailUpdates] = useState(true);
 
+    const containerStyle = {
+        ...styles.container,
+        backgroundColor: theme.colors.background
+    };
+
+    const textStyle = { color: theme.colors.text };
+    const subTextStyle = { color: theme.colors.subText };
+    const sectionTitleStyle = { ...styles.sectionTitle, color: theme.colors.text };
+    const rowStyle = { ...styles.row, borderBottomColor: theme.colors.border };
+
     return (
-        <SafeAreaView style={styles.container}>
+        <SafeAreaView style={containerStyle}>
             <ScrollView contentContainerStyle={styles.content}>
                 <View style={styles.section}>
-                    <Text style={styles.sectionTitle}>Preferências</Text>
+                    <Text style={sectionTitleStyle}>Preferências</Text>
 
-                    <View style={styles.row}>
-                        <Text style={styles.rowText}>Notificações Push</Text>
+                    <View style={rowStyle}>
+                        <Text style={[styles.rowText, textStyle]}>Notificações Push</Text>
                         <Switch
                             trackColor={{ false: "#767577", true: "#ff4458" }}
                             thumbColor={notifications ? "#fff" : "#f4f3f4"}
@@ -31,18 +43,18 @@ export default function SettingsScreen() {
                         />
                     </View>
 
-                    <View style={styles.row}>
-                        <Text style={styles.rowText}>Modo Escuro</Text>
+                    <View style={rowStyle}>
+                        <Text style={[styles.rowText, textStyle]}>Modo Escuro</Text>
                         <Switch
                             trackColor={{ false: "#767577", true: "#ff4458" }}
-                            thumbColor={darkMode ? "#fff" : "#f4f3f4"}
-                            onValueChange={setDarkMode}
-                            value={darkMode}
+                            thumbColor={isDarkMode ? "#fff" : "#f4f3f4"}
+                            onValueChange={toggleTheme}
+                            value={isDarkMode}
                         />
                     </View>
 
-                    <View style={styles.row}>
-                        <Text style={styles.rowText}>Receber emails de novidades</Text>
+                    <View style={rowStyle}>
+                        <Text style={[styles.rowText, textStyle]}>Receber emails de novidades</Text>
                         <Switch
                             trackColor={{ false: "#767577", true: "#ff4458" }}
                             thumbColor={emailUpdates ? "#fff" : "#f4f3f4"}
@@ -53,7 +65,7 @@ export default function SettingsScreen() {
                 </View>
 
                 <View style={styles.section}>
-                    <Text style={styles.sectionTitle}>Suporte</Text>
+                    <Text style={sectionTitleStyle}>Suporte</Text>
                     <TouchableOpacity style={styles.linkRow}>
                         <Text style={styles.linkText}>Central de Ajuda</Text>
                     </TouchableOpacity>

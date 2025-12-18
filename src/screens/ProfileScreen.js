@@ -11,14 +11,18 @@ import {
 
 import { Ionicons } from '@expo/vector-icons';
 
+import { useTheme } from '../contexts/ThemeContext';
+
 export default function AccountScreen({ setLogado, navigation }) {
+    const { theme, isDarkMode } = useTheme();
+
     return (
-        <SafeAreaView style={styles.container}>
-            <StatusBar barStyle="dark-content" backgroundColor="#fff" />
+        <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.background }]}>
+            <StatusBar barStyle={isDarkMode ? "light-content" : "dark-content"} backgroundColor={theme.colors.card} />
 
             {/* Header */}
-            <View style={styles.header}>
-                <Text style={styles.title}>Minha Conta</Text>
+            <View style={[styles.header, { backgroundColor: theme.colors.card, borderBottomColor: theme.colors.border }]}>
+                <Text style={[styles.title, { color: theme.colors.text }]}>Minha Conta</Text>
             </View>
 
             {/* Perfil */}
@@ -27,32 +31,32 @@ export default function AccountScreen({ setLogado, navigation }) {
                     <Text style={styles.avatarText}>D</Text>
                 </View>
 
-                <Text style={styles.name}>Daniel</Text>
-                <Text style={styles.email}>teste@gmail.com</Text>
+                <Text style={[styles.name, { color: theme.colors.text }]}>Daniel</Text>
+                <Text style={[styles.email, { color: theme.colors.subText }]}>teste@gmail.com</Text>
             </View>
 
             {/* Opções */}
             <View style={styles.menu}>
-                <TouchableOpacity style={styles.item} onPress={() => navigation.navigate('EditProfile')}>
-                    <Text style={styles.itemText}>Editar perfil</Text>
-                    <Ionicons name="chevron-forward" size={20} color="#ccc" />
+                <TouchableOpacity style={[styles.item, { backgroundColor: theme.colors.card }]} onPress={() => navigation.navigate('EditProfile')}>
+                    <Text style={[styles.itemText, { color: theme.colors.text }]}>Editar perfil</Text>
+                    <Ionicons name="chevron-forward" size={20} color={theme.colors.subText} />
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.item} onPress={() => navigation.navigate('Settings')}>
-                    <Text style={styles.itemText}>Configurações</Text>
-                    <Ionicons name="chevron-forward" size={20} color="#ccc" />
+                <TouchableOpacity style={[styles.item, { backgroundColor: theme.colors.card }]} onPress={() => navigation.navigate('Settings')}>
+                    <Text style={[styles.itemText, { color: theme.colors.text }]}>Configurações</Text>
+                    <Ionicons name="chevron-forward" size={20} color={theme.colors.subText} />
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.item} onPress={() => navigation.navigate('Privacy')}>
-                    <Text style={styles.itemText}>Privacidade</Text>
-                    <Ionicons name="chevron-forward" size={20} color="#ccc" />
+                <TouchableOpacity style={[styles.item, { backgroundColor: theme.colors.card }]} onPress={() => navigation.navigate('Privacy')}>
+                    <Text style={[styles.itemText, { color: theme.colors.text }]}>Privacidade</Text>
+                    <Ionicons name="chevron-forward" size={20} color={theme.colors.subText} />
                 </TouchableOpacity>
             </View>
 
             {/* Logout */}
             <TouchableOpacity
-                style={styles.logoutButton}
+                style={[styles.logoutButton, { backgroundColor: isDarkMode ? '#333' : '#ddd' }]}
                 onPress={() => setLogado(false)}
             >
-                <Text style={styles.logoutText}>Sair</Text>
+                <Text style={[styles.logoutText, { color: isDarkMode ? '#fff' : '#333' }]}>Sair</Text>
             </TouchableOpacity>
         </SafeAreaView>
     );

@@ -6,7 +6,10 @@ import ActionButtons from '../components/ActionButtons';
 import BottomNav from '../components/BottomNav';
 import { PROFILES } from '../data/profiles';
 
+import { useTheme } from '../contexts/ThemeContext';
+
 export default function HomeScreen({ navigation }) {
+    const { theme, isDarkMode } = useTheme();
     const [currentIndex, setCurrentIndex] = useState(0);
 
     const currentProfile = PROFILES[currentIndex];
@@ -28,8 +31,11 @@ export default function HomeScreen({ navigation }) {
     };
 
     return (
-        <SafeAreaView style={styles.container}>
-            <StatusBar barStyle="dark-content" backgroundColor="#fff" />
+        <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.background }]}>
+            <StatusBar
+                barStyle={isDarkMode ? "light-content" : "dark-content"}
+                backgroundColor={theme.colors.card}
+            />
             <Header />
 
             <View style={styles.cardArea}>

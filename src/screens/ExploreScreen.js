@@ -15,7 +15,10 @@ import { Ionicons } from '@expo/vector-icons';
 import { PROFILES } from '../data/profiles';
 import { useNavigation } from '@react-navigation/native';
 
+import { useTheme } from '../contexts/ThemeContext';
+
 export default function ExploreScreen() {
+    const { theme, isDarkMode } = useTheme();
     const [searchText, setSearchText] = useState('');
     const [selectedTag, setSelectedTag] = useState(null);
     const navigation = useNavigation();
@@ -32,15 +35,15 @@ export default function ExploreScreen() {
     });
 
     const renderItem = ({ item }) => (
-        <TouchableOpacity style={styles.card} onPress={() => { /* Navegar para detalhe se houver */ }}>
-            <Image source={{ uri: item.avatarUrl }} style={styles.avatar} />
+        <TouchableOpacity style={[styles.card, { backgroundColor: theme.colors.card }]} onPress={() => { /* Navegar para detalhe se houver */ }}>
+            <Image source={{ uri: item.avatarUrl }} style={[styles.avatar, { backgroundColor: theme.colors.border }]} />
             <View style={styles.info}>
-                <Text style={styles.name}>{item.name}</Text>
-                <Text style={styles.subject}>{item.subject}</Text>
+                <Text style={[styles.name, { color: theme.colors.text }]}>{item.name}</Text>
+                <Text style={[styles.subject, { color: theme.colors.subText }]}>{item.subject}</Text>
                 <View style={styles.tagsContainer}>
                     {item.tags.slice(0, 2).map((tag, index) => (
-                        <View key={index} style={styles.tagBadge}>
-                            <Text style={styles.tagText}>{tag}</Text>
+                        <View key={index} style={[styles.tagBadge, { backgroundColor: isDarkMode ? '#333' : '#f0f2f5' }]}>
+                            <Text style={[styles.tagText, { color: isDarkMode ? '#ccc' : '#555' }]}>{tag}</Text>
                         </View>
                     ))}
                     {item.tags.length > 2 && (
@@ -48,23 +51,24 @@ export default function ExploreScreen() {
                     )}
                 </View>
             </View>
-            <Ionicons name="chevron-forward" size={20} color="#ccc" />
+            <Ionicons name="chevron-forward" size={20} color={theme.colors.subText} />
         </TouchableOpacity>
     );
 
     return (
-        <SafeAreaView style={styles.container}>
-            <StatusBar barStyle="dark-content" backgroundColor="#fff" />
+        <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.background }]}>
+            <StatusBar barStyle={isDarkMode ? "light-content" : "dark-content"} backgroundColor={theme.colors.card} />
 
-            <View style={styles.header}>
-                <Text style={styles.headerTitle}>Explorar</Text>
+            <View style={[styles.header, { backgroundColor: theme.colors.card, borderBottomColor: theme.colors.border }]}>
+                <Text style={[styles.headerTitle, { color: theme.colors.text }]}>Explorar</Text>
             </View>
 
-            <View style={styles.searchContainer}>
-                <Ionicons name="search" size={20} color="#666" style={styles.searchIcon} />
+            <View style={[styles.searchContainer, { backgroundColor: theme.colors.inputBackground, borderColor: theme.colors.inputBorder }]}>
+                <Ionicons name="search" size={20} color={theme.colors.subText} style={styles.searchIcon} />
                 <TextInput
-                    style={styles.searchInput}
+                    style={[styles.searchInput, { color: theme.colors.text }]}
                     placeholder="Buscar monitor ou matéria..."
+                    placeholderTextColor={theme.colors.subText}
                     value={searchText}
                     onChangeText={setSearchText}
                 />
@@ -80,12 +84,14 @@ export default function ExploreScreen() {
                         <TouchableOpacity
                             style={[
                                 styles.filterChip,
+                                { backgroundColor: theme.colors.card, borderColor: theme.colors.border },
                                 (selectedTag === item || (item === 'Todos' && selectedTag === null)) && styles.filterChipSelected
                             ]}
                             onPress={() => setSelectedTag(item === 'Todos' ? null : item)}
                         >
                             <Text style={[
                                 styles.filterText,
+                                { color: theme.colors.subText },
                                 (selectedTag === item || (item === 'Todos' && selectedTag === null)) && styles.filterTextSelected
                             ]}>
                                 {item}
@@ -103,7 +109,7 @@ export default function ExploreScreen() {
                 contentContainerStyle={styles.listContent}
                 ListEmptyComponent={
                     <View style={styles.emptyState}>
-                        <Text style={styles.emptyText}>Nenhum monitor encontrado.</Text>
+                        <Text style={[styles.emptyText, { color: theme.colors.subText }]}>Nenhum monitor encontrado.</Text>
                     </View>
                 }
             />

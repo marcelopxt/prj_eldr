@@ -11,32 +11,37 @@ const dadosPessoas = {
   ],
 };
 
+import { useTheme } from '../contexts/ThemeContext';
+
 // Componente que renderiza cada linha da conversa
 const ItemConversa = ({ imagem, nome, hora }) => {
   const navigation = useNavigation(); // Hook para acessar a navegação
+  const { theme } = useTheme();
 
   return (
     <TouchableOpacity
-      style={styles.itemContainer}
+      style={[styles.itemContainer, { borderBottomColor: theme.colors.border }]}
       onPress={() => navigation.navigate('Messages', { nome: nome })}
     >
-      <Image source={imagem} style={styles.avatar} />
+      <Image source={imagem} style={[styles.avatar, { backgroundColor: theme.colors.border }]} />
       <View style={styles.textContainer}>
-        <Text style={styles.nome}>{nome}</Text>
-        <Text style={styles.hora}>{hora}</Text>
+        <Text style={[styles.nome, { color: theme.colors.text }]}>{nome}</Text>
+        <Text style={[styles.hora, { color: theme.colors.subText }]}>{hora}</Text>
       </View>
     </TouchableOpacity>
   );
 };
 
 export default function ChatListScreen() {
+  const { theme, isDarkMode } = useTheme();
+
   return (
-    <SafeAreaView style={styles.container}>
-      <StatusBar barStyle="dark-content" backgroundColor="#fff" />
+    <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.background }]}>
+      <StatusBar barStyle={isDarkMode ? "light-content" : "dark-content"} backgroundColor={theme.colors.card} />
 
       {/* Header */}
-      <View style={styles.header}>
-        <Text style={styles.headerText}>Chat</Text>
+      <View style={[styles.header, { backgroundColor: theme.colors.card, borderBottomColor: theme.colors.border }]}>
+        <Text style={[styles.headerText, { color: theme.colors.text }]}>Chat</Text>
       </View>
 
       {/* Body */}

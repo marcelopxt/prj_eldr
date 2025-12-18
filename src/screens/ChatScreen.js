@@ -11,8 +11,11 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
+import { useTheme } from '../contexts/ThemeContext';
+
 export default function ChatScreen({ route }) {
   const { nome } = route.params;
+  const { theme } = useTheme();
   const [mensagem, setMensagem] = useState('');
 
   // Simulação de mensagens
@@ -26,16 +29,22 @@ export default function ChatScreen({ route }) {
   const renderItem = ({ item }) => (
     <View style={[
       styles.balao,
-      item.enviadoPorMim ? styles.balaoEu : styles.balaoOutro
+      item.enviadoPorMim ? styles.balaoEu : [styles.balaoOutro, { backgroundColor: theme.colors.card }]
     ]}>
-      <Text style={[styles.textoMensagem, item.enviadoPorMim && styles.textoMensagemEu]}>{item.texto}</Text>
-      <Text style={[styles.horaMensagem, item.enviadoPorMim && styles.horaMensagemEu]}>{item.hora}</Text>
+      <Text style={[
+        styles.textoMensagem,
+        item.enviadoPorMim ? styles.textoMensagemEu : { color: theme.colors.text }
+      ]}>{item.texto}</Text>
+      <Text style={[
+        styles.horaMensagem,
+        item.enviadoPorMim ? styles.horaMensagemEu : { color: theme.colors.subText }
+      ]}>{item.hora}</Text>
     </View>
   );
 
   return (
     <KeyboardAvoidingView
-      style={styles.container}
+      style={[styles.container, { backgroundColor: theme.colors.background }]}
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
       keyboardVerticalOffset={90} // Ajuste dependendo da altura do seu header
     >
@@ -50,8 +59,9 @@ export default function ChatScreen({ route }) {
       {/* Barra de Entrada de Texto */}
       <View style={styles.inputContainer}>
         <TextInput
-          style={styles.input}
+          style={[styles.input, { backgroundColor: theme.colors.inputBackground, color: theme.colors.text }]}
           placeholder="Digite uma mensagem..."
+          placeholderTextColor={theme.colors.subText}
           value={mensagem}
           onChangeText={setMensagem}
           multiline

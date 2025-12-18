@@ -2,20 +2,24 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
+import { useTheme } from '../contexts/ThemeContext';
+
 export default function Header() {
+    const { theme } = useTheme();
+
     return (
-        <View style={styles.container}>
+        <View style={[styles.container, { backgroundColor: theme.colors.card, borderBottomColor: theme.colors.border }]}>
             <View style={styles.logoContainer}>
-                <Text style={styles.logoText}>iMatch</Text>
+                <Text style={[styles.logoText, { color: theme.colors.text }]}>iMatch</Text>
                 <Ionicons name="school-outline" size={24} color="#00C853" />
             </View>
 
             <View style={styles.actions}>
                 <TouchableOpacity style={styles.iconButton}>
-                    <Ionicons name="search" size={24} color="#555" />
+                    <Ionicons name="search" size={24} color={theme.colors.text} />
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.iconButton}>
-                    <Ionicons name="notifications-outline" size={24} color="#555" />
+                    <Ionicons name="notifications-outline" size={24} color={theme.colors.text} />
                 </TouchableOpacity>
             </View>
         </View>

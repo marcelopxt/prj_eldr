@@ -6,16 +6,20 @@ import { View, Text, Image, StyleSheet, ScrollView, Dimensions } from 'react-nat
 
 const { height } = Dimensions.get('window');
 
+import { useTheme } from '../contexts/ThemeContext';
+
 export default function ProfileCard({ profile }) {
+    const { theme } = useTheme();
+
     return (
-        <View style={styles.cardContainer}>
+        <View style={[styles.cardContainer, { backgroundColor: theme.colors.card }]}>
             <ScrollView
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={styles.scrollContent}
                 bounces={false}
             >
                 {/* Cover Image */}
-                <View style={styles.imageContainer}>
+                <View style={[styles.imageContainer, { backgroundColor: theme.colors.border }]}>
                     <Image
                         source={{ uri: profile.avatarUrl }}
                         style={styles.coverImage}
@@ -24,21 +28,21 @@ export default function ProfileCard({ profile }) {
                 </View>
 
                 {/* Content Body */}
-                <View style={styles.contentBody}>
+                <View style={[styles.contentBody, { backgroundColor: theme.colors.card }]}>
 
                     {/* Header Info */}
                     <View style={styles.headerSection}>
-                        <Text style={styles.name}>{profile.name}</Text>
-                        <Text style={styles.subject}>{profile.subject}</Text>
+                        <Text style={[styles.name, { color: theme.colors.text }]}>{profile.name}</Text>
+                        <Text style={[styles.subject, { color: theme.colors.subText }]}>{profile.subject}</Text>
                     </View>
 
                     {/* Tags First */}
                     <View style={styles.section}>
-                        <Text style={styles.sectionTitle}>Interesses & Tags</Text>
+                        <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>Interesses & Tags</Text>
                         <View style={styles.tagsContainer}>
                             {profile.tags.map((tag, index) => (
-                                <View key={index} style={styles.tagBadge}>
-                                    <Text style={styles.tagText}>{tag}</Text>
+                                <View key={index} style={[styles.tagBadge, { backgroundColor: theme.isDarkMode ? '#333' : '#f1f8e9', borderColor: theme.isDarkMode ? '#555' : '#c5e1a5' }]}>
+                                    <Text style={[styles.tagText, { color: theme.isDarkMode ? '#fff' : '#558b2f' }]}>{tag}</Text>
                                 </View>
                             ))}
                         </View>
@@ -46,44 +50,44 @@ export default function ProfileCard({ profile }) {
 
                     {/* Methodology */}
                     <View style={styles.section}>
-                        <Text style={styles.sectionTitle}>Metodologia</Text>
-                        <Text style={styles.bioText}>{profile.methodology}</Text>
+                        <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>Metodologia</Text>
+                        <Text style={[styles.bioText, { color: theme.colors.subText }]}>{profile.methodology}</Text>
                     </View>
 
                     {/* Experience */}
                     <View style={styles.section}>
-                        <Text style={styles.sectionTitle}>Experiência</Text>
-                        <Text style={styles.bioText}>{profile.experience}</Text>
+                        <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>Experiência</Text>
+                        <Text style={[styles.bioText, { color: theme.colors.subText }]}>{profile.experience}</Text>
                     </View>
 
                     {/* Bio */}
                     <View style={styles.section}>
-                        <Text style={styles.sectionTitle}>Sobre mim</Text>
-                        <Text style={styles.bioText}>{profile.bio}</Text>
+                        <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>Sobre mim</Text>
+                        <Text style={[styles.bioText, { color: theme.colors.subText }]}>{profile.bio}</Text>
                     </View>
 
                     {/* General Info */}
                     <View style={styles.section}>
-                        <Text style={styles.sectionTitle}>Informações Gerais</Text>
+                        <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>Informações Gerais</Text>
 
                         <View style={styles.infoRow}>
-                            <Text style={styles.infoLabel}>Avaliação:</Text>
-                            <Text style={styles.infoValue}>⭐ {profile.rating} ({profile.reviews} reviews)</Text>
+                            <Text style={[styles.infoLabel, { color: theme.colors.text }]}>Avaliação:</Text>
+                            <Text style={[styles.infoValue, { color: theme.colors.subText }]}>⭐ {profile.rating} ({profile.reviews} reviews)</Text>
                         </View>
 
                         <View style={styles.infoRow}>
-                            <Text style={styles.infoLabel}>Local:</Text>
-                            <Text style={styles.infoValue}>{profile.location}</Text>
+                            <Text style={[styles.infoLabel, { color: theme.colors.text }]}>Local:</Text>
+                            <Text style={[styles.infoValue, { color: theme.colors.subText }]}>{profile.location}</Text>
                         </View>
 
                         <View style={styles.infoRow}>
-                            <Text style={styles.infoLabel}>Valor:</Text>
-                            <Text style={styles.infoValue}>{profile.price}</Text>
+                            <Text style={[styles.infoLabel, { color: theme.colors.text }]}>Valor:</Text>
+                            <Text style={[styles.infoValue, { color: theme.colors.subText }]}>{profile.price}</Text>
                         </View>
 
                         <View style={styles.infoRow}>
-                            <Text style={styles.infoLabel}>Disponibilidade:</Text>
-                            <Text style={styles.infoValue}>{profile.details}</Text>
+                            <Text style={[styles.infoLabel, { color: theme.colors.text }]}>Disponibilidade:</Text>
+                            <Text style={[styles.infoValue, { color: theme.colors.subText }]}>{profile.details}</Text>
                         </View>
                     </View>
 
