@@ -1,5 +1,5 @@
 import { Text, View, StyleSheet, FlatList, Image, StatusBar, SafeAreaView } from 'react-native';
-import icon from "../Img/user_icon.jpg";
+import icon from "../../assets/user_icon.jpg";
 import { TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
@@ -16,27 +16,27 @@ const ItemConversa = ({ imagem, nome, hora }) => {
   const navigation = useNavigation(); // Hook para acessar a navegação
 
   return (
-    <TouchableOpacity 
-      style={style.itemContainer} 
-      onPress={() => navigation.navigate('Mensagens', { nome: nome })}
+    <TouchableOpacity
+      style={styles.itemContainer}
+      onPress={() => navigation.navigate('Messages', { nome: nome })}
     >
-      <Image source={imagem} style={style.avatar} />
-      <View style={style.textContainer}>
-        <Text style={style.nome}>{nome}</Text>
-        <Text style={style.hora}>{hora}</Text>
+      <Image source={imagem} style={styles.avatar} />
+      <View style={styles.textContainer}>
+        <Text style={styles.nome}>{nome}</Text>
+        <Text style={styles.hora}>{hora}</Text>
       </View>
     </TouchableOpacity>
   );
 };
 
-export default function PaginaConversa() {
+export default function ChatListScreen() {
   return (
-    <SafeAreaView style={style.container}>
+    <SafeAreaView style={styles.container}>
       <StatusBar backgroundColor="#555151" barStyle="light-content" />
-      
+
       {/* Header */}
-      <View style={style.header}>
-        <Text style={style.headerText}>Chat</Text>
+      <View style={styles.header}>
+        <Text style={styles.headerText}>Chat</Text>
       </View>
 
       {/* Body */}
@@ -44,13 +44,13 @@ export default function PaginaConversa() {
         data={dadosPessoas.lista}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => <ItemConversa {...item} />}
-        contentContainerStyle={style.listContent}
+        contentContainerStyle={styles.listContent}
       />
     </SafeAreaView>
   );
 }
 
-const style = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',

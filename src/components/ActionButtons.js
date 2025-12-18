@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         position: 'absolute',
-        bottom: 80, // Above BottomNav
+        bottom: 20,
         left: 0,
         right: 0,
         gap: 30,

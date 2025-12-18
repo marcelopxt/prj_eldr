@@ -18,55 +18,57 @@ const Stack = createNativeStackNavigator();
 function ChatStack() {
   return (
     <Stack.Navigator>
-      <Stack.Screen 
-        name="ChatList" 
-        component={ChatListScreen} 
-        options={{ headerShown: false }} 
+      <Stack.Screen
+        name="ChatList"
+        component={ChatListScreen}
+        options={{ headerShown: false }}
       />
-      <Stack.Screen 
-        name="Messages" 
-        component={ChatScreen} 
-        options={({ route }) => ({ title: route.params?.nome || 'Chat' })} 
+      <Stack.Screen
+        name="Messages"
+        component={ChatScreen}
+        options={({ route }) => ({ title: route.params?.nome || 'Chat' })}
       />
     </Stack.Navigator>
   );
 }
 
-function MainApp() {
-    return (
-        <NavigationContainer>
-            <Tab.Navigator
-                screenOptions={({ route }) => ({
-                    tabBarIcon: ({ focused, color, size }) => {
-                        let iconName;
-                        if (route.name === 'Home') {
-                            iconName = focused ? 'home' : 'home-outline';
-                        } else if (route.name === 'Chat') {
-                            iconName = focused ? 'chatbubbles' : 'chatbubbles-outline';
-                        } else if (route.name === 'Profile') {
-                            iconName = focused ? 'person' : 'person-outline';
-                        }
-                        return <Ionicons name={iconName} size={size} color={color} />;
-                    },
-                    tabBarActiveTintColor: '#555151',
-                    tabBarInactiveTintColor: 'gray',
-                    headerShown: false,
-                })}
-            >
-                <Tab.Screen name="Chat" component={ChatStack} />
-                <Tab.Screen name="Home" component={HomeScreen} />
-                <Tab.Screen name="Profile" component={ProfileScreen} />
-            </Tab.Navigator>
-        </NavigationContainer>
-    );
+function MainApp({ setLogado }) {
+  return (
+    <NavigationContainer>
+      <Tab.Navigator
+        screenOptions={({ route }) => ({
+          tabBarIcon: ({ focused, color, size }) => {
+            let iconName;
+            if (route.name === 'Home') {
+              iconName = focused ? 'home' : 'home-outline';
+            } else if (route.name === 'Chat') {
+              iconName = focused ? 'chatbubbles' : 'chatbubbles-outline';
+            } else if (route.name === 'Profile') {
+              iconName = focused ? 'person' : 'person-outline';
+            }
+            return <Ionicons name={iconName} size={size} color={color} />;
+          },
+          tabBarActiveTintColor: '#555151',
+          tabBarInactiveTintColor: 'gray',
+          headerShown: false,
+        })}
+      >
+        <Tab.Screen name="Chat" component={ChatStack} />
+        <Tab.Screen name="Home" component={HomeScreen} />
+        <Tab.Screen name="Profile">
+          {(props) => <ProfileScreen {...props} setLogado={setLogado} />}
+        </Tab.Screen>
+      </Tab.Navigator>
+    </NavigationContainer>
+  );
 }
 
 export default function App() {
-    const [logado, setLogado] = useState(false);
+  const [logado, setLogado] = useState(false);
 
-    if (!logado) {
-        return <LoginScreen setLogado={setLogado} />;
-    }
+  if (!logado) {
+    return <LoginScreen setLogado={setLogado} />;
+  }
 
-    return <MainApp />;
+  return <MainApp setLogado={setLogado} />;
 }

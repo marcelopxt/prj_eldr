@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
-import { 
-  View, 
-  Text, 
-  StyleSheet, 
-  FlatList, 
-  TextInput, 
-  TouchableOpacity, 
-  KeyboardAvoidingView, 
-  Platform 
+import {
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  TextInput,
+  TouchableOpacity,
+  KeyboardAvoidingView,
+  Platform
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
-export default function TelaMensagens({ route }) {
+export default function ChatScreen({ route }) {
   const { nome } = route.params;
   const [mensagem, setMensagem] = useState('');
 
@@ -25,17 +25,17 @@ export default function TelaMensagens({ route }) {
 
   const renderItem = ({ item }) => (
     <View style={[
-      style.balao, 
-      item.enviadoPorMim ? style.balaoEu : style.balaoOutro
+      styles.balao,
+      item.enviadoPorMim ? styles.balaoEu : styles.balaoOutro
     ]}>
-      <Text style={style.textoMensagem}>{item.texto}</Text>
-      <Text style={style.horaMensagem}>{item.hora}</Text>
+      <Text style={styles.textoMensagem}>{item.texto}</Text>
+      <Text style={styles.horaMensagem}>{item.hora}</Text>
     </View>
   );
 
   return (
-    <KeyboardAvoidingView 
-      style={style.container} 
+    <KeyboardAvoidingView
+      style={styles.container}
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
       keyboardVerticalOffset={90} // Ajuste dependendo da altura do seu header
     >
@@ -44,19 +44,19 @@ export default function TelaMensagens({ route }) {
         data={mensagens}
         keyExtractor={(item) => item.id}
         renderItem={renderItem}
-        contentContainerStyle={style.listaConteudo}
+        contentContainerStyle={styles.listaConteudo}
       />
 
       {/* Barra de Entrada de Texto */}
-      <View style={style.inputContainer}>
+      <View style={styles.inputContainer}>
         <TextInput
-          style={style.input}
+          style={styles.input}
           placeholder="Digite uma mensagem..."
           value={mensagem}
           onChangeText={setMensagem}
           multiline
         />
-        <TouchableOpacity style={style.botaoEnviar}>
+        <TouchableOpacity style={styles.botaoEnviar}>
           <Ionicons name="send" size={24} color="white" />
         </TouchableOpacity>
       </View>
@@ -64,7 +64,7 @@ export default function TelaMensagens({ route }) {
   );
 }
 
-const style = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#e5ddd5', // Cor de fundo clássica do WhatsApp
@@ -121,7 +121,7 @@ const style = StyleSheet.create({
     elevation: 2,
   },
   botaoEnviar: {
-    backgroundColor: '#555151', 
+    backgroundColor: '#555151',
     width: 50,
     height: 50,
     borderRadius: 25,

@@ -6,13 +6,12 @@ import ActionButtons from '../components/ActionButtons';
 import BottomNav from '../components/BottomNav';
 import { PROFILES } from '../data/profiles';
 
-export default function HomeScreen({setTela}) {
+export default function HomeScreen({ navigation }) {
     const [currentIndex, setCurrentIndex] = useState(0);
 
     const currentProfile = PROFILES[currentIndex];
-    const irParaConta = () => {
-        setTela('conta');
-    };
+
+    // Removed irParaConta as it's handled by Tab Navigator
 
     const handleNextProfile = () => {
         setCurrentIndex((prevIndex) => (prevIndex + 1) % PROFILES.length);
@@ -43,7 +42,7 @@ export default function HomeScreen({setTela}) {
                 onLike={handleLike}
             />
 
-            <BottomNav irParaConta={irParaConta} />
+            {/* BottomNav removed - using Tab Navigator */}
         </SafeAreaView>
     );
 }
@@ -57,6 +56,5 @@ const styles = StyleSheet.create({
     cardArea: {
         flex: 1,
         position: 'relative',
-        paddingBottom: 60, // Space for ActionButtons
     }
 });
