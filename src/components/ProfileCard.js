@@ -1,8 +1,5 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet, ScrollView, Dimensions } from 'react-native';
-// LinearGradient removed as it was unused and causing errors.
-// Assuming nativewind is not available, we use standard StyleSheet.
-// Fallback for LinearGradient if not installed: View.
 
 const { height } = Dimensions.get('window');
 

@@ -1,32 +1,44 @@
-import { Text, View, StyleSheet, FlatList, Image, StatusBar, SafeAreaView } from 'react-native';
-import icon from "../../assets/user_icon.jpg";
-import { TouchableOpacity } from 'react-native';
+import { Text, View, StyleSheet, FlatList, Image, StatusBar, SafeAreaView, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-
-const dadosPessoas = {
-  lista: [
-    { id: '1', imagem: icon, nome: "Fernanda Lima", hora: "20:40" },
-    { id: '2', imagem: icon, nome: "André Souza", hora: "15:42" },
-    { id: '3', imagem: icon, nome: "Luana Pereira", hora: "01:00" },
-  ],
-};
-
 import { useTheme } from '../contexts/ThemeContext';
+import { PROFILES } from '../data/profiles';
+
+// Generate mock active chats from profiles
+const activeChats = PROFILES.slice(0, 6).map((profile, index) => ({
+  id: profile.id,
+  name: profile.name,
+  avatarUrl: profile.avatarUrl,
+  lastMessage: index % 2 === 0 ? `Olá, gostaria de saber mais sobre ${profile.subject}.` : 'Combinado, até logo!',
+  time: index % 2 === 0 ? '10:30' : 'Ontem',
+  unread: index === 0 ? 2 : 0,
+}));
 
 // Componente que renderiza cada linha da conversa
-const ItemConversa = ({ imagem, nome, hora }) => {
+const ItemConversa = ({ avatarUrl, name, lastMessage, time, unread }) => {
   const navigation = useNavigation(); // Hook para acessar a navegação
   const { theme } = useTheme();
 
   return (
     <TouchableOpacity
-      style={[styles.itemContainer, { borderBottomColor: theme.colors.border }]}
-      onPress={() => navigation.navigate('Messages', { nome: nome })}
+      style={[styles.card, { backgroundColor: theme.colors.card }]}
+      onPress={() => navigation.navigate('Messages', { nome: name })}
     >
-      <Image source={imagem} style={[styles.avatar, { backgroundColor: theme.colors.border }]} />
-      <View style={styles.textContainer}>
-        <Text style={[styles.nome, { color: theme.colors.text }]}>{nome}</Text>
-        <Text style={[styles.hora, { color: theme.colors.subText }]}>{hora}</Text>
+      <Image source={{ uri: avatarUrl }} style={[styles.avatar, { backgroundColor: theme.colors.border }]} />
+
+      <View style={styles.contentContainer}>
+        <View style={styles.topRow}>
+          <Text style={[styles.name, { color: theme.colors.text }]} numberOfLines={1}>{name}</Text>
+          <Text style={[styles.time, { color: theme.colors.subText }]}>{time}</Text>
+        </View>
+
+        <View style={styles.bottomRow}>
+          <Text style={[styles.message, { color: theme.colors.subText }]} numberOfLines={1}>{lastMessage}</Text>
+          {unread > 0 && (
+            <View style={[styles.badge, { backgroundColor: theme.colors.primary }]}>
+              <Text style={styles.badgeText}>{unread}</Text>
+            </View>
+          )}
+        </View>
       </View>
     </TouchableOpacity>
   );
@@ -41,12 +53,12 @@ export default function ChatListScreen() {
 
       {/* Header */}
       <View style={[styles.header, { backgroundColor: theme.colors.card, borderBottomColor: theme.colors.border }]}>
-        <Text style={[styles.headerText, { color: theme.colors.text }]}>Chat</Text>
+        <Text style={[styles.headerText, { color: theme.colors.text }]}>Conversas</Text>
       </View>
 
       {/* Body */}
       <FlatList
-        data={dadosPessoas.lista}
+        data={activeChats}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => <ItemConversa {...item} />}
         contentContainerStyle={styles.listContent}
@@ -76,36 +88,69 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   listContent: {
-    paddingVertical: 10,
+    padding: 16,
   },
-  itemContainer: {
+  card: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 20,
-    paddingVertical: 15,
-    borderBottomWidth: 0.5,
-    borderBottomColor: '#eee', // Linha sutil entre conversas
+    backgroundColor: '#fff',
+    padding: 12,
+    marginBottom: 12,
+    borderRadius: 12,
+    elevation: 2,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
   },
   avatar: {
-    width: 60,
-    height: 60,
-    borderRadius: 30, // Deixa a imagem redonda
-    backgroundColor: '#ddd',
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    backgroundColor: '#eee',
   },
-  textContainer: {
+  contentContainer: {
     flex: 1,
+    marginLeft: 12,
+  },
+  topRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginLeft: 15,
+    marginBottom: 4,
   },
-  nome: {
-    fontSize: 18,
+  name: {
+    fontSize: 16,
     fontWeight: 'bold',
     color: '#000',
+    flex: 1,
+    marginRight: 8,
   },
-  hora: {
+  time: {
+    fontSize: 12,
+    color: '#999',
+  },
+  bottomRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  message: {
     fontSize: 14,
     color: '#666',
+    flex: 1,
+    marginRight: 8,
   },
+  badge: {
+    minWidth: 20,
+    height: 20,
+    borderRadius: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 6,
+  },
+  badgeText: {
+    color: '#fff',
+    fontSize: 10,
+    fontWeight: 'bold',
+  }
 });
