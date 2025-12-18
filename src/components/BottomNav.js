@@ -2,8 +2,7 @@ import React from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
-export default function BottomNav() {
-    // Static visual only
+export default function BottomNav({ irParaConta }) {
     return (
         <View style={styles.container}>
             <TouchableOpacity style={styles.navItem}>
@@ -14,12 +13,16 @@ export default function BottomNav() {
                 <Ionicons name="home" size={28} color="#FF5252" />
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.navItem}>
+            <TouchableOpacity
+                style={styles.navItem}
+                onPress={irParaConta}
+            >
                 <Ionicons name="person-outline" size={24} color="#ccc" />
             </TouchableOpacity>
         </View>
     );
 }
+
 
 const styles = StyleSheet.create({
     container: {

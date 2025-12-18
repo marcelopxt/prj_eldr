@@ -6,10 +6,13 @@ import ActionButtons from '../components/ActionButtons';
 import BottomNav from '../components/BottomNav';
 import { PROFILES } from '../data/profiles';
 
-export default function HomeScreen() {
+export default function HomeScreen({setTela}) {
     const [currentIndex, setCurrentIndex] = useState(0);
 
     const currentProfile = PROFILES[currentIndex];
+    const irParaConta = () => {
+        setTela('conta');
+    };
 
     const handleNextProfile = () => {
         setCurrentIndex((prevIndex) => (prevIndex + 1) % PROFILES.length);
@@ -40,7 +43,7 @@ export default function HomeScreen() {
                 onLike={handleLike}
             />
 
-            <BottomNav />
+            <BottomNav irParaConta={irParaConta} />
         </SafeAreaView>
     );
 }
