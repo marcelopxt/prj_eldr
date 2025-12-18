@@ -8,6 +8,7 @@ import { StatusBar } from 'expo-status-bar';
 // Screens
 import LoginScreen from './src/screens/LoginScreen';
 import HomeScreen from './src/screens/HomeScreen';
+import ExploreScreen from './src/screens/ExploreScreen'; // Import new screen
 import ProfileScreen from './src/screens/ProfileScreen';
 import ChatListScreen from './src/screens/ChatListScreen';
 import ChatScreen from './src/screens/ChatScreen';
@@ -43,18 +44,21 @@ function MainApp({ setLogado }) {
               iconName = focused ? 'home' : 'home-outline';
             } else if (route.name === 'Chat') {
               iconName = focused ? 'chatbubbles' : 'chatbubbles-outline';
+            } else if (route.name === 'Explore') {
+              iconName = focused ? 'search' : 'search-outline';
             } else if (route.name === 'Profile') {
               iconName = focused ? 'person' : 'person-outline';
             }
             return <Ionicons name={iconName} size={size} color={color} />;
           },
-          tabBarActiveTintColor: '#555151',
+          tabBarActiveTintColor: '#ff4458', // Apply branding color to active tab
           tabBarInactiveTintColor: 'gray',
           headerShown: false,
         })}
       >
-        <Tab.Screen name="Chat" component={ChatStack} />
         <Tab.Screen name="Home" component={HomeScreen} />
+        <Tab.Screen name="Explore" component={ExploreScreen} />
+        <Tab.Screen name="Chat" component={ChatStack} />
         <Tab.Screen name="Profile">
           {(props) => <ProfileScreen {...props} setLogado={setLogado} />}
         </Tab.Screen>
