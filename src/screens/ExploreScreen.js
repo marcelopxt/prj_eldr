@@ -35,7 +35,18 @@ export default function ExploreScreen() {
     });
 
     const renderItem = ({ item }) => (
-        <TouchableOpacity style={[styles.card, { backgroundColor: theme.colors.card }]} onPress={() => { /* Navegar para detalhe se houver */ }}>
+        <TouchableOpacity
+            style={[styles.card, { backgroundColor: theme.colors.card }]}
+            onPress={() => {
+                // Navigate to the 'Home' tab
+                // Inside 'Home' tab, there is a HomeStack
+                // We want to go to the 'HomeMain' screen within that stack
+                navigation.navigate('Home', {
+                    screen: 'HomeMain',
+                    params: { profileId: item.id }
+                });
+            }}
+        >
             <Image source={{ uri: item.avatarUrl }} style={[styles.avatar, { backgroundColor: theme.colors.border }]} />
             <View style={styles.info}>
                 <Text style={[styles.name, { color: theme.colors.text }]}>{item.name}</Text>

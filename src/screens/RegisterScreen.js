@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import {
     View,
     Text,
@@ -7,33 +7,43 @@ import {
     StyleSheet,
     SafeAreaView,
     StatusBar,
-    Platform
+    Platform,
+    Alert
 } from 'react-native';
-
 import { useNavigation } from '@react-navigation/native';
 
-export default function LoginScreen({ setLogado }) {
+export default function RegisterScreen({ setLogado }) {
     const navigation = useNavigation();
+    const [name, setName] = useState('');
     const [email, setEmail] = useState('');
-    const [senha, setSenha] = useState('');
-    const [emailInvalido, setEmailInvalido] = useState(false);
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
 
-    const handleEntrar = () => {
-        setErrorMessage(''); // Reset error
-        const emailValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-        setEmailInvalido(!emailValido);
+    const handleRegister = () => {
+        setErrorMessage('');
 
-        if (!emailValido) {
+        if (!name || !email || !password || !confirmPassword) {
+            setErrorMessage('Por favor, preencha todos os campos.');
+            return;
+        }
+
+        const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        if (!emailValid) {
             setErrorMessage('Por favor, insira um email válido.');
             return;
         }
 
-        if (email === 'teste@gmail.com' && senha === '123') {
-            setLogado(true);
-        } else {
-            setErrorMessage('Email ou senha incorretos.');
+        if (password !== confirmPassword) {
+            setErrorMessage('As senhas não coincidem.');
+            return;
         }
+
+        // Simulating registration success
+        // In a real app, this would be an API call
+        Alert.alert("Sucesso", "Conta criada com sucesso!", [
+            { text: "OK", onPress: () => setLogado(true) }
+        ]);
     };
 
     return (
@@ -41,51 +51,57 @@ export default function LoginScreen({ setLogado }) {
             <StatusBar barStyle="dark-content" backgroundColor="#fff" />
 
             <View style={styles.header}>
-                <Text style={styles.title}>StudyDate</Text>
+                <Text style={styles.title}>Crie sua conta</Text>
+                <Text style={styles.subtitle}>Junte-se ao StudyDate</Text>
             </View>
 
             <View style={styles.form}>
                 <TextInput
-                    style={[
-                        styles.input,
-                        emailInvalido && styles.inputErro
-                    ]}
+                    style={styles.input}
+                    placeholder="Nome completo"
+                    value={name}
+                    onChangeText={setName}
+                />
+
+                <TextInput
+                    style={styles.input}
                     placeholder="E-mail"
                     autoCapitalize="none"
                     keyboardType="email-address"
                     value={email}
-                    onChangeText={(text) => {
-                        setEmail(text);
-                        setEmailInvalido(false);
-                        setErrorMessage('');
-                    }}
+                    onChangeText={setEmail}
                 />
 
                 <TextInput
                     style={styles.input}
                     placeholder="Senha"
                     secureTextEntry
-                    value={senha}
-                    onChangeText={(text) => {
-                        setSenha(text);
-                        setErrorMessage('');
-                    }}
+                    value={password}
+                    onChangeText={setPassword}
+                />
+
+                <TextInput
+                    style={styles.input}
+                    placeholder="Confirmar Senha"
+                    secureTextEntry
+                    value={confirmPassword}
+                    onChangeText={setConfirmPassword}
                 />
 
                 {errorMessage ? <Text style={styles.errorText}>{errorMessage}</Text> : null}
 
                 <TouchableOpacity
-                    style={styles.botao}
-                    onPress={handleEntrar}
+                    style={styles.button}
+                    onPress={handleRegister}
                 >
-                    <Text style={styles.botaoTexto}>Entrar</Text>
+                    <Text style={styles.buttonText}>Cadastrar</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity
                     style={styles.linkButton}
-                    onPress={() => navigation.navigate('Register')}
+                    onPress={() => navigation.goBack()}
                 >
-                    <Text style={styles.linkText}>Não tem uma conta? Cadastre-se</Text>
+                    <Text style={styles.linkText}>Já tem uma conta? Faça login</Text>
                 </TouchableOpacity>
             </View>
         </SafeAreaView>
@@ -99,22 +115,23 @@ const styles = StyleSheet.create({
         paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
         justifyContent: 'center',
     },
-
     header: {
         alignItems: 'center',
         marginBottom: 32,
     },
-
     title: {
-        fontSize: 32,
+        fontSize: 28,
         fontWeight: 'bold',
         color: '#ff4458',
+        marginBottom: 8,
     },
-
+    subtitle: {
+        fontSize: 16,
+        color: '#666',
+    },
     form: {
         paddingHorizontal: 24,
     },
-
     input: {
         backgroundColor: '#fff',
         borderRadius: 10,
@@ -123,32 +140,25 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: '#ddd',
     },
-
-    inputErro: {
-        borderColor: 'red',
-    },
-
     errorText: {
         color: 'red',
         fontSize: 14,
         marginBottom: 10,
         textAlign: 'center',
     },
-
-    botao: {
+    button: {
         backgroundColor: '#ff4458',
         padding: 16,
         borderRadius: 10,
         alignItems: 'center',
+        marginBottom: 16,
     },
-
-    botaoTexto: {
+    buttonText: {
         color: '#fff',
         fontWeight: 'bold',
         fontSize: 16,
     },
     linkButton: {
-        marginTop: 20,
         alignItems: 'center',
     },
     linkText: {
@@ -156,4 +166,3 @@ const styles = StyleSheet.create({
         fontSize: 14,
     }
 });
-

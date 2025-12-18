@@ -8,13 +8,23 @@ import { PROFILES } from '../data/profiles';
 
 import { useTheme } from '../contexts/ThemeContext';
 
-export default function HomeScreen({ navigation }) {
+export default function HomeScreen({ navigation, route }) {
     const { theme, isDarkMode } = useTheme();
     const [currentIndex, setCurrentIndex] = useState(0);
 
     const currentProfile = PROFILES[currentIndex];
 
-    // Removed irParaConta as it's handled by Tab Navigator
+    // Handle incoming navigation from ExploreScreen
+    React.useEffect(() => {
+        if (route.params?.profileId) {
+            const index = PROFILES.findIndex(p => p.id === route.params.profileId);
+            if (index !== -1) {
+                setCurrentIndex(index);
+                // Reset param to avoid re-triggering if needed, though mostly harmless here
+                navigation.setParams({ profileId: null });
+            }
+        }
+    }, [route.params?.profileId]);
 
     const handleNextProfile = () => {
         setCurrentIndex((prevIndex) => (prevIndex + 1) % PROFILES.length);

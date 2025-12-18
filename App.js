@@ -11,6 +11,7 @@ import { DefaultTheme, DarkTheme } from '@react-navigation/native';
 
 // Screens
 import LoginScreen from './src/screens/LoginScreen';
+import RegisterScreen from './src/screens/RegisterScreen';
 import HomeScreen from './src/screens/HomeScreen';
 import ExploreScreen from './src/screens/ExploreScreen';
 import ProfileScreen from './src/screens/ProfileScreen';
@@ -79,7 +80,59 @@ function HomeStack() {
   );
 }
 
-function MainAppContent({ setLogado }) {
+function AuthStack({ setLogado }) {
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="Login">
+        {(props) => <LoginScreen {...props} setLogado={setLogado} />}
+      </Stack.Screen>
+      <Stack.Screen name="Register">
+        {(props) => <RegisterScreen {...props} setLogado={setLogado} />}
+      </Stack.Screen>
+    </Stack.Navigator>
+  );
+}
+
+function MainTabNavigator({ setLogado }) {
+  const { theme } = useTheme();
+
+  return (
+    <Tab.Navigator
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ focused, color, size }) => {
+          let iconName;
+          if (route.name === 'Home') {
+            iconName = focused ? 'home' : 'home-outline';
+          } else if (route.name === 'Chat') {
+            iconName = focused ? 'chatbubbles' : 'chatbubbles-outline';
+          } else if (route.name === 'Explore') {
+            iconName = focused ? 'search' : 'search-outline';
+          } else if (route.name === 'Profile') {
+            iconName = focused ? 'person' : 'person-outline';
+          }
+          return <Ionicons name={iconName} size={size} color={color} />;
+        },
+        tabBarActiveTintColor: theme.colors.tabIconSelected,
+        tabBarInactiveTintColor: theme.colors.tabIconDefault,
+        headerShown: false,
+        tabBarStyle: {
+          backgroundColor: theme.colors.card,
+          borderTopColor: theme.colors.border,
+        }
+      })}
+    >
+      <Tab.Screen name="Home" component={HomeStack} />
+      <Tab.Screen name="Explore" component={ExploreScreen} />
+      <Tab.Screen name="Chat" component={ChatStack} />
+      <Tab.Screen name="Profile">
+        {() => <ProfileStack setLogado={setLogado} />}
+      </Tab.Screen>
+    </Tab.Navigator>
+  );
+}
+
+function AppContent() {
+  const [logado, setLogado] = useState(false);
   const { theme, isDarkMode } = useTheme();
 
   const baseTheme = isDarkMode ? DarkTheme : DefaultTheme;
@@ -100,49 +153,13 @@ function MainAppContent({ setLogado }) {
   return (
     <NavigationContainer theme={navigationTheme}>
       <StatusBar style={isDarkMode ? "light" : "dark"} backgroundColor={theme.colors.card} />
-      <Tab.Navigator
-        screenOptions={({ route }) => ({
-          tabBarIcon: ({ focused, color, size }) => {
-            let iconName;
-            if (route.name === 'Home') {
-              iconName = focused ? 'home' : 'home-outline';
-            } else if (route.name === 'Chat') {
-              iconName = focused ? 'chatbubbles' : 'chatbubbles-outline';
-            } else if (route.name === 'Explore') {
-              iconName = focused ? 'search' : 'search-outline';
-            } else if (route.name === 'Profile') {
-              iconName = focused ? 'person' : 'person-outline';
-            }
-            return <Ionicons name={iconName} size={size} color={color} />;
-          },
-          tabBarActiveTintColor: theme.colors.tabIconSelected,
-          tabBarInactiveTintColor: theme.colors.tabIconDefault,
-          headerShown: false,
-          tabBarStyle: {
-            backgroundColor: theme.colors.card,
-            borderTopColor: theme.colors.border,
-          }
-        })}
-      >
-        <Tab.Screen name="Home" component={HomeStack} />
-        <Tab.Screen name="Explore" component={ExploreScreen} />
-        <Tab.Screen name="Chat" component={ChatStack} />
-        <Tab.Screen name="Profile">
-          {() => <ProfileStack setLogado={setLogado} />}
-        </Tab.Screen>
-      </Tab.Navigator>
+      {logado ? (
+        <MainTabNavigator setLogado={setLogado} />
+      ) : (
+        <AuthStack setLogado={setLogado} />
+      )}
     </NavigationContainer>
   );
-}
-
-function AppContent() {
-  const [logado, setLogado] = useState(false);
-
-  if (!logado) {
-    return <LoginScreen setLogado={setLogado} />;
-  }
-
-  return <MainAppContent setLogado={setLogado} />;
 }
 
 export default function App() {

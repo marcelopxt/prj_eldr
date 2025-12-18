@@ -11,7 +11,7 @@ export default function Header() {
     return (
         <View style={[styles.container, { backgroundColor: theme.colors.card, borderBottomColor: theme.colors.border }]}>
             <View style={styles.logoContainer}>
-                <Text style={[styles.logoText, { color: theme.colors.text }]}>iMatch</Text>
+                <Text style={[styles.logoText, { color: theme.colors.text }]}>StudyDate</Text>
                 <Ionicons name="school-outline" size={24} color="#00C853" />
             </View>
 
