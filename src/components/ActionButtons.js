@@ -1,19 +1,31 @@
 import React from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useTheme } from '../contexts/ThemeContext';
 
 export default function ActionButtons({ onPass, onLike, onRefresh }) {
+    const { theme } = useTheme();
+
     return (
         <View style={styles.container}>
-            <TouchableOpacity style={[styles.button, styles.passButton]} onPress={onPass}>
+            <TouchableOpacity
+                style={[styles.button, styles.passButton, { backgroundColor: theme.colors.card, borderColor: theme.colors.border }]}
+                onPress={onPass}
+            >
                 <Ionicons name="close" size={30} color="#FF5252" />
             </TouchableOpacity>
 
-            <TouchableOpacity style={[styles.button, styles.refreshButton]} onPress={onRefresh}>
+            <TouchableOpacity
+                style={[styles.button, styles.refreshButton, { backgroundColor: theme.colors.card, borderColor: theme.colors.border }]}
+                onPress={onRefresh}
+            >
                 <Ionicons name="refresh" size={24} color="#FFB300" />
             </TouchableOpacity>
 
-            <TouchableOpacity style={[styles.button, styles.likeButton]} onPress={onLike}>
+            <TouchableOpacity
+                style={[styles.button, styles.likeButton, { backgroundColor: theme.colors.card, borderColor: theme.colors.border }]}
+                onPress={onLike}
+            >
                 <Ionicons name="heart" size={30} color="#00E676" />
             </TouchableOpacity>
         </View>
@@ -37,7 +49,6 @@ const styles = StyleSheet.create({
         width: 60,
         height: 60,
         borderRadius: 30,
-        backgroundColor: '#fff',
         justifyContent: 'center',
         alignItems: 'center',
         shadowColor: "#000",
@@ -48,6 +59,7 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.2,
         shadowRadius: 4.65,
         elevation: 7,
+        borderWidth: 1, // Ensure border width is set for color to show
     },
     refreshButton: {
         width: 45,
@@ -55,11 +67,9 @@ const styles = StyleSheet.create({
         borderRadius: 22.5,
     },
     passButton: {
-        borderWidth: 1,
-        borderColor: '#ffebee',
+        // Border color handled inline
     },
     likeButton: {
-        borderWidth: 1,
-        borderColor: '#e8f5e9',
+        // Border color handled inline
     }
 });

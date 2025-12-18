@@ -19,6 +19,7 @@ import SettingsScreen from './src/screens/SettingsScreen';
 import PrivacyScreen from './src/screens/PrivacyScreen';
 import ChatListScreen from './src/screens/ChatListScreen';
 import ChatScreen from './src/screens/ChatScreen';
+import NotificationsScreen from './src/screens/NotificationsScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -60,6 +61,19 @@ function ProfileStack({ setLogado }) {
         name="Privacy"
         component={PrivacyScreen}
         options={{ title: 'Privacidade' }}
+      />
+    </Stack.Navigator>
+  );
+}
+
+function HomeStack() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name="HomeMain" component={HomeScreen} options={{ headerShown: false }} />
+      <Stack.Screen
+        name="Notifications"
+        component={NotificationsScreen}
+        options={{ title: 'Notificações' }}
       />
     </Stack.Navigator>
   );
@@ -110,7 +124,7 @@ function MainAppContent({ setLogado }) {
           }
         })}
       >
-        <Tab.Screen name="Home" component={HomeScreen} />
+        <Tab.Screen name="Home" component={HomeStack} />
         <Tab.Screen name="Explore" component={ExploreScreen} />
         <Tab.Screen name="Chat" component={ChatStack} />
         <Tab.Screen name="Profile">

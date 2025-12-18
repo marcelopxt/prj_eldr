@@ -1,11 +1,12 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-
+import { useNavigation } from '@react-navigation/native';
 import { useTheme } from '../contexts/ThemeContext';
 
 export default function Header() {
     const { theme } = useTheme();
+    const navigation = useNavigation();
 
     return (
         <View style={[styles.container, { backgroundColor: theme.colors.card, borderBottomColor: theme.colors.border }]}>
@@ -18,7 +19,10 @@ export default function Header() {
                 <TouchableOpacity style={styles.iconButton}>
                     <Ionicons name="search" size={24} color={theme.colors.text} />
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.iconButton}>
+                <TouchableOpacity
+                    style={styles.iconButton}
+                    onPress={() => navigation.navigate('Notifications')}
+                >
                     <Ionicons name="notifications-outline" size={24} color={theme.colors.text} />
                 </TouchableOpacity>
             </View>
