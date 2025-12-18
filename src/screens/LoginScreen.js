@@ -14,14 +14,22 @@ export default function LoginScreen({ setLogado }) {
     const [email, setEmail] = useState('');
     const [senha, setSenha] = useState('');
     const [emailInvalido, setEmailInvalido] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
 
     const handleEntrar = () => {
+        setErrorMessage(''); // Reset error
         const emailValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        setEmailInvalido(!emailValido);
 
-        if (!emailValido) return;
+        if (!emailValido) {
+            setErrorMessage('Por favor, insira um email válido.');
+            return;
+        }
 
         if (email === 'teste@gmail.com' && senha === '123') {
             setLogado(true);
+        } else {
+            setErrorMessage('Email ou senha incorretos.');
         }
     };
 
@@ -46,6 +54,7 @@ export default function LoginScreen({ setLogado }) {
                     onChangeText={(text) => {
                         setEmail(text);
                         setEmailInvalido(false);
+                        setErrorMessage('');
                     }}
                 />
 
@@ -54,8 +63,13 @@ export default function LoginScreen({ setLogado }) {
                     placeholder="Senha"
                     secureTextEntry
                     value={senha}
-                    onChangeText={setSenha}
+                    onChangeText={(text) => {
+                        setSenha(text);
+                        setErrorMessage('');
+                    }}
                 />
+
+                {errorMessage ? <Text style={styles.errorText}>{errorMessage}</Text> : null}
 
                 <TouchableOpacity
                     style={styles.botao}
@@ -66,7 +80,7 @@ export default function LoginScreen({ setLogado }) {
             </View>
         </SafeAreaView>
     );
-    
+
 }
 const styles = StyleSheet.create({
     container: {
@@ -102,6 +116,13 @@ const styles = StyleSheet.create({
 
     inputErro: {
         borderColor: 'red',
+    },
+
+    errorText: {
+        color: 'red',
+        fontSize: 14,
+        marginBottom: 10,
+        textAlign: 'center',
     },
 
     botao: {
