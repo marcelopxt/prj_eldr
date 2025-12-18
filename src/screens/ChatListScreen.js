@@ -5,9 +5,9 @@ import { useNavigation } from '@react-navigation/native';
 
 const dadosPessoas = {
   lista: [
-    { id: '1', imagem: icon, nome: "Marcelo Peixoto", hora: "20:40" },
-    { id: '2', imagem: icon, nome: "Diego Araújo", hora: "15:42" },
-    { id: '3', imagem: icon, nome: "Daniel Berbet", hora: "01:00" },
+    { id: '1', imagem: icon, nome: "Fernanda Lima", hora: "20:40" },
+    { id: '2', imagem: icon, nome: "André Souza", hora: "15:42" },
+    { id: '3', imagem: icon, nome: "Luana Pereira", hora: "01:00" },
   ],
 };
 
@@ -32,7 +32,7 @@ const ItemConversa = ({ imagem, nome, hora }) => {
 export default function ChatListScreen() {
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar backgroundColor="#555151" barStyle="light-content" />
+      <StatusBar barStyle="dark-content" backgroundColor="#fff" />
 
       {/* Header */}
       <View style={styles.header}>
@@ -53,21 +53,20 @@ export default function ChatListScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#f8f9fa',
   },
   header: {
     width: '100%',
-    backgroundColor: "#555151",
-    height: 60,
+    backgroundColor: "#fff",
+    height: 80, // Taller for safe area if simplest, but better to match Header.js padding
+    paddingTop: 30,
     justifyContent: 'center',
     alignItems: 'center',
-    elevation: 4, // Sombra no Android
-    shadowColor: '#000', // Sombra no iOS
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
+    borderBottomWidth: 1,
+    borderBottomColor: '#f0f0f0',
   },
   headerText: {
-    color: "#fff",
+    color: "#333",
     fontSize: 22,
     fontWeight: 'bold',
   },

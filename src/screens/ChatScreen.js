@@ -28,8 +28,8 @@ export default function ChatScreen({ route }) {
       styles.balao,
       item.enviadoPorMim ? styles.balaoEu : styles.balaoOutro
     ]}>
-      <Text style={styles.textoMensagem}>{item.texto}</Text>
-      <Text style={styles.horaMensagem}>{item.hora}</Text>
+      <Text style={[styles.textoMensagem, item.enviadoPorMim && styles.textoMensagemEu]}>{item.texto}</Text>
+      <Text style={[styles.horaMensagem, item.enviadoPorMim && styles.horaMensagemEu]}>{item.hora}</Text>
     </View>
   );
 
@@ -57,7 +57,7 @@ export default function ChatScreen({ route }) {
           multiline
         />
         <TouchableOpacity style={styles.botaoEnviar}>
-          <Ionicons name="send" size={24} color="white" />
+          <Ionicons name="send" size={24} color="#fff" />
         </TouchableOpacity>
       </View>
     </KeyboardAvoidingView>
