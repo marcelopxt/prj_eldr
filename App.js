@@ -8,8 +8,11 @@ import { StatusBar } from 'expo-status-bar';
 // Screens
 import LoginScreen from './src/screens/LoginScreen';
 import HomeScreen from './src/screens/HomeScreen';
-import ExploreScreen from './src/screens/ExploreScreen'; // Import new screen
+import ExploreScreen from './src/screens/ExploreScreen';
 import ProfileScreen from './src/screens/ProfileScreen';
+import EditProfileScreen from './src/screens/EditProfileScreen';
+import SettingsScreen from './src/screens/SettingsScreen';
+import PrivacyScreen from './src/screens/PrivacyScreen';
 import ChatListScreen from './src/screens/ChatListScreen';
 import ChatScreen from './src/screens/ChatScreen';
 
@@ -28,6 +31,31 @@ function ChatStack() {
         name="Messages"
         component={ChatScreen}
         options={({ route }) => ({ title: route.params?.nome || 'Chat' })}
+      />
+    </Stack.Navigator>
+  );
+}
+
+function ProfileStack({ setLogado }) {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name="ProfileMain" options={{ headerShown: false }}>
+        {(props) => <ProfileScreen {...props} setLogado={setLogado} />}
+      </Stack.Screen>
+      <Stack.Screen
+        name="EditProfile"
+        component={EditProfileScreen}
+        options={{ title: 'Editar Perfil' }}
+      />
+      <Stack.Screen
+        name="Settings"
+        component={SettingsScreen}
+        options={{ title: 'Configurações' }}
+      />
+      <Stack.Screen
+        name="Privacy"
+        component={PrivacyScreen}
+        options={{ title: 'Privacidade' }}
       />
     </Stack.Navigator>
   );
@@ -60,7 +88,7 @@ function MainApp({ setLogado }) {
         <Tab.Screen name="Explore" component={ExploreScreen} />
         <Tab.Screen name="Chat" component={ChatStack} />
         <Tab.Screen name="Profile">
-          {(props) => <ProfileScreen {...props} setLogado={setLogado} />}
+          {() => <ProfileStack setLogado={setLogado} />}
         </Tab.Screen>
       </Tab.Navigator>
     </NavigationContainer>

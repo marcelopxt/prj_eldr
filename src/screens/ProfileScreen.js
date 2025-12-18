@@ -9,7 +9,9 @@ import {
     Platform
 } from 'react-native';
 
-export default function AccountScreen({ setLogado }) {
+import { Ionicons } from '@expo/vector-icons';
+
+export default function AccountScreen({ setLogado, navigation }) {
     return (
         <SafeAreaView style={styles.container}>
             <StatusBar barStyle="dark-content" backgroundColor="#fff" />
@@ -31,9 +33,18 @@ export default function AccountScreen({ setLogado }) {
 
             {/* Opções */}
             <View style={styles.menu}>
-                <Text style={styles.item}>Editar perfil</Text>
-                <Text style={styles.item}>Configurações</Text>
-                <Text style={styles.item}>Privacidade</Text>
+                <TouchableOpacity style={styles.item} onPress={() => navigation.navigate('EditProfile')}>
+                    <Text style={styles.itemText}>Editar perfil</Text>
+                    <Ionicons name="chevron-forward" size={20} color="#ccc" />
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.item} onPress={() => navigation.navigate('Settings')}>
+                    <Text style={styles.itemText}>Configurações</Text>
+                    <Ionicons name="chevron-forward" size={20} color="#ccc" />
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.item} onPress={() => navigation.navigate('Privacy')}>
+                    <Text style={styles.itemText}>Privacidade</Text>
+                    <Ionicons name="chevron-forward" size={20} color="#ccc" />
+                </TouchableOpacity>
             </View>
 
             {/* Logout */}
@@ -108,6 +119,13 @@ const styles = StyleSheet.create({
         padding: 16,
         borderRadius: 10,
         marginBottom: 12,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+    },
+    itemText: {
+        fontSize: 16,
+        color: '#333',
     },
 
     logoutButton: {
